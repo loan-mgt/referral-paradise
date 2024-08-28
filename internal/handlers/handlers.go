@@ -6,12 +6,21 @@ import (
 	"log"
 	"net/http"
 	"os"
-	"strconv"
 	"time"
+    "math/rand"
+
 
 	"referral/paradise/internal/db"
-	"referral/paradise/internal/random"
 )
+
+
+func generateSeed(s string) int64 {
+	seed := int64(0)
+	for _, char := range s {
+		seed += int64(char)
+	}
+	return seed
+}
 
 func HomeHandler(w http.ResponseWriter, r *http.Request) {
 	// Get IP Address
@@ -21,10 +30,12 @@ func HomeHandler(w http.ResponseWriter, r *http.Request) {
 	salt := os.Getenv("SALT")
 	now := time.Now()
 	seedStr := fmt.Sprintf("%s%s%d%d", salt, ipAddress, now.Day(), now.Year())
-	seed, _ := strconv.ParseInt(seedStr, 10, 64)
+	seed := generateSeed(seedStr)
+
+	rand.Seed(seed)
 
 	// Get a random number from seed
-	randomNumber := random.GetRandomNumberFromSeed(seed)
+	randomNumber := rand.Int()
 
 	// Get the table size
 	tableSize, err := db.GetTableSize()
@@ -34,10 +45,12 @@ func HomeHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	if tableSize < 1 {
+		tableSize = 1
+	}
+
 	// Calculate the row number
 	rowNumber := randomNumber % tableSize
-
-	log.Printf("debug seed: %s rowNumber: %d %d", seedStr, rowNumber, randomNumber)
 
 	// Fetch the ref string from the table
 	var ref string

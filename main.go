@@ -20,5 +20,5 @@ func main() {
     r.HandleFunc("/add", handlers.AddRefHandler).Methods("POST")
 
     http.Handle("/", r)
-    log.Fatal(http.ListenAndServe(":8080", nil))
+    log.Fatal(http.ListenAndServe(":8050", nil))
 }
