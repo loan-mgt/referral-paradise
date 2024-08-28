@@ -4,15 +4,16 @@ import (
 	"fmt"
 	"html/template"
 	"log"
+	"math/rand"
 	"net/http"
 	"os"
+	"strings"
 	"time"
-    "math/rand"
-
 
 	"referral/paradise/internal/db"
 )
 
+var templates = template.Must(template.ParseGlob("templates/*.html"))
 
 func generateSeed(s string) int64 {
 	seed := int64(0)
@@ -26,16 +27,22 @@ func HomeHandler(w http.ResponseWriter, r *http.Request) {
 	// Get IP Address
 	ipAddress := r.RemoteAddr
 
+	// Remove the port from the IP address
+	ipAddress = strings.Split(ipAddress, ":")[0]
+
 	// Generate seed
 	salt := os.Getenv("SALT")
 	now := time.Now()
 	seedStr := fmt.Sprintf("%s%s%d%d", salt, ipAddress, now.Day(), now.Year())
 	seed := generateSeed(seedStr)
 
-	rand.Seed(seed)
+	random := rand.New(rand.NewSource(seed))
 
 	// Get a random number from seed
-	randomNumber := rand.Int()
+	randomNumber := random.Int()
+
+	log.Printf("rand seed %d number %d seedStr %s", seed, randomNumber, seedStr)
+	//mysalt127.0.0.1:62931282024
 
 	// Get the table size
 	tableSize, err := db.GetTableSize()
@@ -62,14 +69,12 @@ func HomeHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Render the HTML template
-	tmpl, err := template.New("home").Parse("<html><body><h1>{{.}}</h1></body></html>")
+	err = templates.ExecuteTemplate(w, "home.html", ref)
 	if err != nil {
-		log.Printf("Error creating template: %v", err)
+		log.Printf("Error executing template: %v", err)
 		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
 		return
 	}
-
-	tmpl.Execute(w, ref)
 }
 
 func AddRefHandler(w http.ResponseWriter, r *http.Request) {
@@ -81,10 +86,8 @@ func AddRefHandler(w http.ResponseWriter, r *http.Request) {
 
 	_, err := db.DB.Exec("INSERT INTO ref_code (ref) VALUES (?)", ref)
 	if err != nil {
-		log.Printf("Error inserting ref: %v", err)
+		log.Printf("Error executing template: %v", err)
 		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
 		return
 	}
-
-	fmt.Fprintf(w, "Ref added successfully")
 }
