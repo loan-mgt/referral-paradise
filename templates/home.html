@@ -15,6 +15,14 @@
             margin: 0;
         }
 
+        p {
+            margin: 0;
+        }
+
+        h2 {
+            margin: 0;
+        }
+
         header {
             display: flex;
             align-items: center;
@@ -38,10 +46,6 @@
             height: 100%;
         }
 
-        h2 {
-            font-size: xx-large;
-        }
-
         .ml-auto {
             margin-left: auto;
         }
@@ -56,28 +60,155 @@
         .ref a {
             color: red;
             text-decoration: none;
+            font-size: 5rem;
+            display: flex;
+            gap: .5rem;
+            align-items: center;
         }
 
-        .ref a:hover {
-            text-decoration: underline;
+        .ref a svg {
+            height: 5rem;
         }
+
+        .link {
+            text-decoration: none;
+            color: black;
+        }
+
+        button {
+            border-radius: 2rem;
+            padding: .5rem 1rem .5rem 1rem;
+            border: none;
+            background: rgb(224, 224, 224);
+            cursor: pointer;
+            transition: all linear .1s;
+            display: flex;
+            gap: .5rem;
+            align-items: center;
+        }
+
+        svg {
+            height: 1rem;
+            width: auto;
+        }
+
+        button:hover {
+            background: rgb(216, 152, 152);
+        }
+
+        .header-action {
+            display: flex;
+            gap: 2rem;
+            height: 100%;
+            align-items: center;
+        }
+
+        .home-bottom {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 1rem;
+            width: 100%;
+            height: fit-content;
+        }
+
+        .source {
+            text-decoration: none;
+            color: black;
+            border-radius: 2rem;
+            padding: .5rem 1rem .5rem 1rem;
+            border: none;
+            background: rgb(224, 224, 224);
+            width: fit-content;
+            transition: all linear .1s;
+            display: flex;
+            gap: .5rem;
+            align-items: center;
+        }
+
+
+        .source:hover {
+            background: rgb(216, 152, 152);
+        }
+
+        .bar {
+            background-color: red;
+            height: .8rem;
+            width: 0%;
+            transition: all ease-in-out .2s;
+        }
+
+        .ref:hover .bar {
+            width: 100%;
+        }
+
+
     </style>
 </head>
 <body>
     <div class="core">
         <header>
             <h1>Referral Paradise</h1>
-            <a class="ml-auto" href="github.com/loan-mgt">source</a>
+
+            <div class="header-action ml-auto">
+                <a class="link" href="#faq">FAQ</a>
+                <button>
+                    <svg width="800px" height="800px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <g id="Edit / Add_Plus">
+                        <path id="Vector" d="M6 12H12M12 12H18M12 12V18M12 12V6" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </g>
+                        </svg>
+
+                    <p>Add yours</p>
+                </button>
+
+
+            </div>
+            
         </header>
 
         <main>
 
             <div class="ref">
-                <a href="https://www.tesla.com/referral/{{ .}}"><h2>  {{ .}}</h2></a>
+                <a href="https://www.tesla.com/referral/{{ .}}">
+                    <h2>  {{ .}}</h2>
+                    <svg width="800px" height="800px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M20.2929 9.70708C20.5789 9.99307 21.009 10.0786 21.3827 9.92385C21.7564 9.76907 22 9.40443 22 8.99997V2.99997C22 2.44768 21.5523 1.99997 21 1.99997H15C14.5955 1.99997 14.2309 2.24361 14.0761 2.61729C13.9213 2.99096 14.0069 3.42108 14.2929 3.70708L16.2322 5.64641L9.58574 12.2929C9.19522 12.6834 9.19522 13.3166 9.58574 13.7071L10.2928 14.4142C10.6834 14.8048 11.3165 14.8048 11.7071 14.4142L18.3536 7.76774L20.2929 9.70708Z" fill="red"/>
+                        <path d="M4.5 8.00006C4.5 7.72392 4.72386 7.50006 5 7.50006H10.0625C10.6148 7.50006 11.0625 7.05234 11.0625 6.50006V5.50006C11.0625 4.94777 10.6148 4.50006 10.0625 4.50006H5C3.067 4.50006 1.5 6.06706 1.5 8.00006V19.0001C1.5 20.9331 3.067 22.5001 5 22.5001H16C17.933 22.5001 19.5 20.9331 19.5 19.0001V13.9376C19.5 13.3853 19.0523 12.9376 18.5 12.9376H17.5C16.9477 12.9376 16.5 13.3853 16.5 13.9376V19.0001C16.5 19.2762 16.2761 19.5001 16 19.5001H5C4.72386 19.5001 4.5 19.2762 4.5 19.0001V8.00006Z" fill="red"/>
+                        </svg>
+                 </a>
+                 <div class="bar"></div>
 
             </div>
 
+            
+
         </main>
+        <div class="home-bottom">
+            <a href="github.com/loan-mgt" class="source">
+                <svg width="800px" height="800px" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    
+                    <title>github [#142]</title>
+                    <desc>Created with Sketch.</desc>
+                    <defs>
+                
+                </defs>
+                    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                        <g id="Dribbble-Light-Preview" transform="translate(-140.000000, -7559.000000)" fill="#000000">
+                            <g id="icons" transform="translate(56.000000, 160.000000)">
+                                <path d="M94,7399 C99.523,7399 104,7403.59 104,7409.253 C104,7413.782 101.138,7417.624 97.167,7418.981 C96.66,7419.082 96.48,7418.762 96.48,7418.489 C96.48,7418.151 96.492,7417.047 96.492,7415.675 C96.492,7414.719 96.172,7414.095 95.813,7413.777 C98.04,7413.523 100.38,7412.656 100.38,7408.718 C100.38,7407.598 99.992,7406.684 99.35,7405.966 C99.454,7405.707 99.797,7404.664 99.252,7403.252 C99.252,7403.252 98.414,7402.977 96.505,7404.303 C95.706,7404.076 94.85,7403.962 94,7403.958 C93.15,7403.962 92.295,7404.076 91.497,7404.303 C89.586,7402.977 88.746,7403.252 88.746,7403.252 C88.203,7404.664 88.546,7405.707 88.649,7405.966 C88.01,7406.684 87.619,7407.598 87.619,7408.718 C87.619,7412.646 89.954,7413.526 92.175,7413.785 C91.889,7414.041 91.63,7414.493 91.54,7415.156 C90.97,7415.418 89.522,7415.871 88.63,7414.304 C88.63,7414.304 88.101,7413.319 87.097,7413.247 C87.097,7413.247 86.122,7413.234 87.029,7413.87 C87.029,7413.87 87.684,7414.185 88.139,7415.37 C88.139,7415.37 88.726,7417.2 91.508,7416.58 C91.513,7417.437 91.522,7418.245 91.522,7418.489 C91.522,7418.76 91.338,7419.077 90.839,7418.982 C86.865,7417.627 84,7413.783 84,7409.253 C84,7403.59 88.478,7399 94,7399" id="github-[#142]">
+                
+                </path>
+                            </g>
+                        </g>
+                    </g>
+                </svg>
+                source
+            </a>
+
+        </div>
+
+        
 
     </div>
     
