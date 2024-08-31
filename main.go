@@ -27,5 +27,5 @@ func main() {
 
 	mux.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("static"))))
 
-	log.Fatal(http.ListenAndServe(":8050", mux))
+	log.Fatal(http.ListenAndServe(":8080", mux))
 }
