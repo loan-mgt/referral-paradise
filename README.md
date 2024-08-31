@@ -7,10 +7,7 @@
   <h3 align="center">Referral Paradise</h3>
   
     
-  <p align="center">Referral Paradise is an open-source web application designed to distribute community-entered Tesla referral codes randomly. </p>
-  <p align="center">
-      The platform aims to provide a fair chance for everyone in the Tesla community to share and benefit from referral codes.</p>
-
+  <p align="center">Referral Paradise is an open-source web application designed to distribute community-entered Tesla referral codes randomly. The platform aims to provide a fair chance for everyone in the Tesla community to share and benefit from referral codes. </p>
 
 
 </div>
