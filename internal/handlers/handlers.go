@@ -11,6 +11,9 @@ import (
 	"time"
 
 	"referral/paradise/internal/db"
+	"referral/paradise/internal/tools"
+
+	"github.com/go-sql-driver/mysql"
 )
 
 var templates = template.Must(template.ParseGlob("templates/*.html"))
@@ -64,8 +67,6 @@ func HomeHandler(w http.ResponseWriter, r *http.Request) {
 	err = db.DB.QueryRow("SELECT ref FROM ref_code LIMIT 1 OFFSET ?", rowNumber).Scan(&ref)
 	if err != nil {
 		log.Printf("Error fetching ref: %v", err)
-		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
-		return
 	}
 
 	// Render the HTML template
@@ -84,10 +85,44 @@ func AddRefHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	_, err := db.DB.Exec("INSERT INTO ref_code (ref) VALUES (?)", ref)
+	// Step 1: Validate the referral code with an external request
+	resp, err := tools.CheckReferralCode(ref)
 	if err != nil {
-		log.Printf("Error executing template: %v", err)
-		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+		log.Printf("Error validating referral code: %v", err)
+		http.Error(w, "Failed to validate referral code", http.StatusInternalServerError)
 		return
 	}
+
+	if !resp {
+		http.Error(w, "Invalid referral code", http.StatusBadRequest)
+		return
+	}
+
+	// Step 2: Attempt to insert the referral code into the database
+	_, err = db.DB.Exec("INSERT INTO ref_code (ref) VALUES (?)", ref)
+	if err != nil {
+		// Check if the error is due to a unique constraint violation
+		if isDuplicateEntryError(err) {
+			http.Error(w, "Referral code already inserted", http.StatusConflict)
+		} else {
+			log.Printf("Error inserting referral code: %v", err)
+			http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+		}
+		return
+	}
+
+	// Step 3: Respond with success
+	w.WriteHeader(http.StatusOK)
+	fmt.Fprint(w, "Referral code successfully added")
+}
+
+// isDuplicateEntryError checks if the error is due to a duplicate entry in the database
+func isDuplicateEntryError(err error) bool {
+	// This logic will depend on your specific SQL driver
+	// For example, with MySQL you might check for a specific error number
+	// Adjust this to match your SQL driver
+	if err, ok := err.(*mysql.MySQLError); ok && err.Number == 1062 {
+		return true
+	}
+	return false
 }
