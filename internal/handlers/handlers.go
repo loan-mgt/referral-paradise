@@ -27,6 +27,18 @@ func generateSeed(s string) int64 {
 }
 
 func HomeHandler(w http.ResponseWriter, r *http.Request) {
+	PageHandler(w, r, "home", "")
+}
+
+func RivianHandler(w http.ResponseWriter, r *http.Request) {
+	PageHandler(w, r, "rivian", "rivian")
+}
+
+func TeslaHandler(w http.ResponseWriter, r *http.Request) {
+	PageHandler(w, r, "tesla", "tesla")
+}
+
+func PageHandler(w http.ResponseWriter, r *http.Request, template_name string, ref_type string) {
 	// Get IP Address
 	ipAddress := r.RemoteAddr
 
@@ -48,29 +60,28 @@ func HomeHandler(w http.ResponseWriter, r *http.Request) {
 	//mysalt127.0.0.1:62931282024
 
 	// Get the table size
-	tableSize, err := db.GetTableSize()
+	tableSize, err := db.GetTableSize(ref_type)
 	if err != nil {
 		log.Printf("Error fetching table size: %v", err)
 		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
 		return
 	}
 
-	if tableSize < 1 {
-		tableSize = 1
-	}
-
-	// Calculate the row number
-	rowNumber := randomNumber % tableSize
-
 	// Fetch the ref string from the table
 	var ref string
-	err = db.DB.QueryRow("SELECT ref FROM ref_code LIMIT 1 OFFSET ?", rowNumber).Scan(&ref)
-	if err != nil {
-		log.Printf("Error fetching ref: %v", err)
+
+	if tableSize >= 1 {
+		// Calculate the row number
+		rowNumber := randomNumber % tableSize
+
+		err = db.DB.QueryRow("SELECT ref FROM ref_code LIMIT 1 OFFSET ?", rowNumber).Scan(&ref)
+		if err != nil {
+			log.Printf("Error fetching ref: %v", err)
+		}
 	}
 
 	// Render the HTML template
-	err = templates.ExecuteTemplate(w, "home.html", ref)
+	err = templates.ExecuteTemplate(w, template_name+".html", ref)
 	if err != nil {
 		log.Printf("Error executing template: %v", err)
 		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
@@ -78,7 +89,15 @@ func HomeHandler(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func AddRefHandler(w http.ResponseWriter, r *http.Request) {
+func AddRefHandlerRivian(w http.ResponseWriter, r *http.Request) {
+	AddRefHandler(w, r, "rivian")
+}
+
+func AddRefHandlerTesla(w http.ResponseWriter, r *http.Request) {
+	AddRefHandler(w, r, "tesla")
+}
+
+func AddRefHandler(w http.ResponseWriter, r *http.Request, ref_type string) {
 	ref := r.FormValue("ref")
 	if ref == "" {
 		http.Error(w, "Missing ref parameter", http.StatusBadRequest)
@@ -99,7 +118,7 @@ func AddRefHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Step 2: Attempt to insert the referral code into the database
-	_, err = db.DB.Exec("INSERT INTO ref_code (ref) VALUES (?)", ref)
+	_, err = db.DB.Exec("INSERT INTO ref_code (ref, type) VALUES (?, ?)", ref, ref_type)
 	if err != nil {
 		// Check if the error is due to a unique constraint violation
 		if isDuplicateEntryError(err) {

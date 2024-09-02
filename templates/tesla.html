@@ -6,11 +6,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Referral paradise</title>
 
-    <meta name="description" content="Referral Paradise is an open-source web app that randomly distributes community-entered Tesla referral codes.">
-    <meta name="keywords" content="Tesla, referral codes, Tesla referral program, open source, web app, Tesla community">
+    <meta name="description"
+        content="Referral Paradise is an open-source web app that randomly distributes community-entered Tesla referral codes.">
+    <meta name="keywords"
+        content="Tesla, referral codes, Tesla referral program, open source, web app, Tesla community">
     <meta name="author" content="Referral Paradise Team">
     <meta property="og:title" content="Referral Paradise - Tesla Referral Code Generator">
-    <meta property="og:description" content="Referral Paradise is an open-source web app that randomly distributes community-entered Tesla referral codes.">
+    <meta property="og:description"
+        content="Referral Paradise is an open-source web app that randomly distributes community-entered Tesla referral codes.">
     <meta property="og:image" content="/static/banner.png">
     <meta property="og:url" content="https://github.com/loan-mgt/referral-paradise">
     <meta property="og:type" content="website">
@@ -20,7 +23,22 @@
 
     <style>
         :root {
-            --gray: rgb(224, 224, 224);
+            --primary: rgb(224, 224, 224);
+            /* Light Gray */
+            --secondary: rgb(216, 152, 152);
+            /* Light Red for hover states */
+            --accent: red;
+            /* Red for important elements */
+            --background-dark: rgba(0, 0, 0, 0.4);
+            /* Dark background for modal */
+            --text-dark: #000000;
+            /* Black text color */
+            --text-light: white;
+            /* White text color */
+            --toast-success: #4CAF50;
+            /* Green for success toast */
+            --toast-error: #F44336;
+            /* Red for error toast */
         }
 
         body {
@@ -45,7 +63,7 @@
             align-items: center;
             justify-content: start;
             gap: 3rem;
-            padding: 0 1rem 0 1rem;
+            padding: 0 1rem;
             height: 4rem;
         }
 
@@ -74,7 +92,7 @@
         }
 
         .ref a {
-            color: red;
+            color: var(--accent);
             text-decoration: none;
             font-size: 5rem;
             display: flex;
@@ -86,7 +104,6 @@
             .ref a {
                 font-size: 4rem;
             }
-
         }
 
         @media screen and (max-width: 500px) {
@@ -101,9 +118,7 @@
             header h1 {
                 font-size: 1.2rem;
             }
-
         }
-
 
         .ref a svg {
             height: 5rem;
@@ -111,14 +126,14 @@
 
         .link {
             text-decoration: none;
-            color: black;
+            color: var(--text-dark);
         }
 
         button {
             border-radius: 2rem;
-            padding: .5rem 1rem .5rem 1rem;
+            padding: .5rem 1rem;
             border: none;
-            background: var(--gray);
+            background: var(--primary);
             cursor: pointer;
             transition: all linear .1s;
             display: flex;
@@ -132,7 +147,7 @@
         }
 
         button:hover {
-            background: rgb(216, 152, 152);
+            background: var(--secondary);
         }
 
         .header-action {
@@ -153,11 +168,11 @@
 
         .source {
             text-decoration: none;
-            color: black;
+            color: var(--text-dark);
             border-radius: 2rem;
-            padding: .5rem 1rem .5rem 1rem;
+            padding: .5rem 1rem;
             border: none;
-            background: rgb(224, 224, 224);
+            background: var(--primary);
             width: fit-content;
             transition: all linear .1s;
             display: flex;
@@ -166,11 +181,11 @@
         }
 
         .source:hover {
-            background: rgb(216, 152, 152);
+            background: var(--secondary);
         }
 
         .bar {
-            background-color: red;
+            background-color: var(--accent);
             height: .8rem;
             width: 0%;
             transition: all ease-in-out .5s;
@@ -199,7 +214,7 @@
         }
 
         .faq-item {
-            border: 1px solid var(--gray);
+            border: 1px solid var(--primary);
             border-radius: 0.5rem;
             padding: 0.5rem;
             cursor: pointer;
@@ -233,9 +248,6 @@
             /* turns the plus into a minus */
         }
 
-
-
-
         /* Modal styles */
         .modal {
             display: none;
@@ -249,17 +261,17 @@
             width: 100%;
             height: 100%;
             overflow: auto;
-            background-color: rgba(0, 0, 0, 0.4);
+            background-color: var(--background-dark);
         }
 
         .modal-content {
             display: flex;
             flex-direction: column;
             gap: 3rem;
-            background-color: #fefefe;
+            background-color: var(--primary);
             margin: 15% auto;
             padding: 20px;
-            border: 1px solid #888;
+            border: 1px solid var(--secondary);
             width: 80%;
             max-width: 400px;
             border-radius: 1rem;
@@ -274,7 +286,7 @@
 
         .close:hover,
         .close:focus {
-            color: black;
+            color: var(--text-dark);
             text-decoration: none;
             cursor: pointer;
         }
@@ -293,8 +305,8 @@
         form input {
             border-radius: .2rem;
             border: none;
-            background-color: var(--gray);
-            padding: .2rem .5rem .2rem .5rem;
+            background-color: var(--primary);
+            padding: .2rem .5rem;
         }
 
         .submit-holder {
@@ -318,7 +330,7 @@
 
         .toast {
             background-color: #333;
-            color: white;
+            color: var(--text-light);
             padding: 1rem;
             border-radius: 0.5rem;
             opacity: 0;
@@ -336,17 +348,17 @@
         }
 
         .toast-success {
-            background-color: #4CAF50;
+            background-color: var(--toast-success);
         }
 
         .toast-error {
-            background-color: #F44336;
+            background-color: var(--toast-error);
         }
 
         .toast svg {
             width: 1.5rem;
             height: 1.5rem;
-            fill: white;
+            fill: var(--text-light);
         }
     </style>
 </head>
@@ -391,7 +403,7 @@
         </main>
 
         <div class="home-bottom">
-            <a href="https://github.com/loan-mgt/referral-paradise" class="source">
+            <a href="github.com/loan-mgt" class="source">
                 <svg width="800px" height="800px" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg"
                     xmlns:xlink="http://www.w3.org/1999/xlink">
                     <title>github [#142]</title>
@@ -432,27 +444,29 @@
                     <p>This is a simple web app that distributes randomly community-entered Tesla referral codes.</p>
                 </div>
             </div>
-            
+
             <div class="faq-item">
                 <p class="faq-question">Why am I always seeing the same code? <span class="plus-icon">+</span></p>
                 <div class="faq-answer">
                     <p>To limit abuse, the website will only give a new code to use every 24 hours.</p>
                 </div>
             </div>
-            
+
             <div class="faq-item">
                 <p class="faq-question">How is this project related to Tesla? <span class="plus-icon">+</span></p>
                 <div class="faq-answer">
                     <p>This project has no affiliation with Tesla; it is an independent open-source project.</p>
                 </div>
             </div>
-            
+
             <div class="faq-item">
                 <p class="faq-question">Why does this website exist? <span class="plus-icon">+</span></p>
                 <div class="faq-answer">
-                    <p>Since the last update, Tesla referral codes only work for 10 purchases per year. This project aims to avoid flooding Reddit with referral codes and to give everyone an equal chance of having their code used.</p>
+                    <p>Since the last update, Tesla referral codes only work for 10 purchases per year. This project
+                        aims to avoid flooding Reddit with referral codes and to give everyone an equal chance of having
+                        their code used.</p>
                 </div>
-            </div>            
+            </div>
         </div>
     </div>
 

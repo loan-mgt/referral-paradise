@@ -1,0 +1,3 @@
+-- Migration 3
+ALTER TABLE ref_code
+ADD COLUMN type VARCHAR(25) NOT NULL DEFAULT 'TESLA';

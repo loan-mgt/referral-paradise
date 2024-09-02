@@ -57,9 +57,9 @@ func RunMigrations() {
 	}
 }
 
-func GetTableSize() (int, error) {
+func GetTableSize(ref_type string) (int, error) {
 	var count int
-	err := DB.QueryRow("SELECT COUNT(*) FROM ref_code").Scan(&count)
+	err := DB.QueryRow("SELECT COUNT(*) FROM ref_code WHERE type = ?", ref_type).Scan(&count)
 	if err != nil {
 		return 0, err
 	}

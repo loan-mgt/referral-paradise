@@ -19,7 +19,10 @@ func main() {
 	r := mux.NewRouter()
 
 	r.HandleFunc("/", handlers.HomeHandler).Methods("GET")
-	r.HandleFunc("/add", handlers.AddRefHandler).Methods("POST")
+	r.HandleFunc("/tesla", handlers.TeslaHandler).Methods("GET")
+	r.HandleFunc("/rivian", handlers.RivianHandler).Methods("GET")
+	r.HandleFunc("/add/tesla", handlers.AddRefHandlerTesla).Methods("POST")
+	r.HandleFunc("/add/rivian", handlers.AddRefHandlerRivian).Methods("POST")
 
 	mux := http.NewServeMux()
 
